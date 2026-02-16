@@ -174,7 +174,7 @@ int main(void) {
     }
 
     printf("NTFS USN Journal Monitor (Real-Time Mode)\n");
-    printf("Create/delete/rename files on C: to see events below:\n");
+    printf("Create/Delete/Rename files on C: to see events below:\n");
     printf("--------------------------------------------------------\n");
 
     MonitorUSN(hVolume);
