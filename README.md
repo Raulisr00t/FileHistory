@@ -6,8 +6,6 @@
 
 A lightweight, high-performance C++ application that monitors the **NTFS Update Sequence Number (USN) Journal** to track real-time file system changes on Windows volumes. Built for developers, security researchers, and backup engineers who need low-level filesystem visibility.
 
-https://github.com/Raulisr00t/FileHistory/assets/12345678/9a8b7c6d-5e4f-3a2b-1c0d-9f8e7d6c5b4a
-
 ## ✨ Features
 - 🔍 **Real-time monitoring** of file creations, deletions, renames, and writes
 - ⚡ **Kernel-level efficiency** (near-zero CPU overhead when idle)
