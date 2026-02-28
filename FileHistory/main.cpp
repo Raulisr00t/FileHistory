@@ -115,9 +115,9 @@ void CacheNewDirectory(ULONGLONG fileFRN, ULONGLONG parentFRN, const wchar_t* na
     std::wstring parentPath = ResolveParentPath(parentFRN);
     if (parentPath.empty()) return;
 
-    if (!parentPath.empty() && parentPath.back() != L'\\') {
+    if (!parentPath.empty() && parentPath.back() != L'\\') 
         parentPath += L"\\";
-    }
+    
     std::wstring fullPath = parentPath + std::wstring(name, nameLen);
 
     std::lock_guard<std::mutex> lock(g_cacheMutex);
@@ -151,12 +151,12 @@ void MonitorUSN(HANDLE hVolume) {
     TryCache(L"C:\\Program Files");
 
     wchar_t userProf[MAX_PATH];
-    if (GetEnvironmentVariableW(L"USERPROFILE", userProf, MAX_PATH)) {
+    if (GetEnvironmentVariableW(L"USERPROFILE", userProf, MAX_PATH)) 
         TryCache(userProf);
-    }
 
     DWORD bytes = 0;
     USN_JOURNAL_DATA jData = { 0 };
+    
     if (!DeviceIoControl(hVolume, FSCTL_QUERY_USN_JOURNAL, NULL, 0,
         &jData, sizeof(jData), &bytes, NULL)) {
         printf("[!] Failed to query USN journal (err=%lu)\n", GetLastError());
@@ -169,6 +169,7 @@ void MonitorUSN(HANDLE hVolume) {
     printf("--------------------------------------------------------\n\n");
 
     READ_USN_JOURNAL_DATA_V1 readData = { 0 };
+    
     readData.StartUsn = jData.NextUsn;
     readData.ReasonMask = USN_REASON_FILE_CREATE | USN_REASON_FILE_DELETE |
         USN_REASON_RENAME_NEW_NAME | USN_REASON_DATA_OVERWRITE |
@@ -254,6 +255,7 @@ BOOL WINAPI CtrlHandler(DWORD dwCtrlType) {
         exit(0);
         return TRUE;
     }
+
     return FALSE;
 }
 
@@ -261,11 +263,14 @@ int main(void) {
     SetConsoleCtrlHandler(CtrlHandler, TRUE);
 
     HANDLE hVolume = OpenVolume(L"C:");
+   
     if (hVolume == INVALID_HANDLE_VALUE) {
         DWORD err = GetLastError();
+        
         printf("[!] Failed to open volume (error %lu)\n", err);
         if (err == ERROR_ACCESS_DENIED)
             printf("[!] RUN AS ADMINISTRATOR REQUIRED\n");
+        
         return 1;
     }
 
@@ -275,5 +280,6 @@ int main(void) {
 
     MonitorUSN(hVolume);
     CloseHandle(hVolume);
+    
     return 0;
 }
