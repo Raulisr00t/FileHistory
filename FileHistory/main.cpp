@@ -269,25 +269,9 @@ int main(void) {
         return 1;
     }
 
-    HANDLE hRoot = CreateFileW(L"C:\\", FILE_READ_ATTRIBUTES,
-        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-        nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
-    if (hRoot != INVALID_HANDLE_VALUE) {
-        g_rootFRN = GetFRNFromHandle(hRoot);
-        CloseHandle(hRoot);
-        if (g_rootFRN) {
-            std::lock_guard<std::mutex> lock(g_cacheMutex);
-            g_frnCache[g_rootFRN] = L"C:\\";
-        }
-    }
-    if (g_rootFRN == 0) g_rootFRN = 0x5;
-
-    printf("🚀 NTFS USN Monitor - INSTANT START\n");
-    printf("====================================\n");
-    printf("✅ Pre-cached critical directories\n");
-    printf("✅ On-demand path resolution (no startup scan!)\n");
-    printf("✅ Thread-safe cache with mutex protection\n");
-    printf("✅ Press Ctrl+C to exit\n\n");
+    printf("NTFS USN Journal Monitor (Real-Time Mode)\n");
+    printf("Create/Delete/Rename files on C: to see events below:\n");
+    printf("--------------------------------------------------------\n");
 
     MonitorUSN(hVolume);
     CloseHandle(hVolume);
